@@ -7,23 +7,19 @@ import com.dantsu.escposprinter.connection.bluetooth.BluetoothPrintersConnection
 import com.dantsu.escposprinter.exceptions.EscPosConnectionException;
 
 public class AsyncBluetoothEscPosPrint extends AsyncEscPosPrint {
-    public AsyncBluetoothEscPosPrint(Context context) {
-        super(context);
-    }
-
     public AsyncBluetoothEscPosPrint(Context context, OnPrintFinished onPrintFinished) {
-        super(context, onPrintFinished);
+        super(context, onPrintFinished,"BLE-Task");
     }
 
-    protected PrinterStatus doInBackground(AsyncEscPosPrinter... printersData) {
+    public PrinterStatus doInBackground(AsyncEscPosPrinter... printersData) {
         if (printersData.length == 0) {
-            return new PrinterStatus(null, AsyncEscPosPrint.FINISH_NO_PRINTER);
+            return new PrinterStatus(null, Constant.FINISH_NO_PRINTER);
         }
 
         AsyncEscPosPrinter printerData = printersData[0];
         DeviceConnection deviceConnection = printerData.getPrinterConnection();
 
-        this.publishProgress(AsyncEscPosPrint.PROGRESS_CONNECTING);
+        this.publishProgress(Constant.PROGRESS_CONNECTING);
 
         if (deviceConnection == null) {
             printersData[0] = new AsyncEscPosPrinter(
